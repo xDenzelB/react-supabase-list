@@ -1,54 +1,20 @@
-import { useEffect, useState } from 'react';
 import Loading from '../src/loading.gif';
 import './App.css';
 import FighterList from './FighterList';
 import FoodList from './FoodList';
-import { getFighter, getFood, getMovies, getSports } from './services/fetch-utils';
+import MovieList from './MovieList';
 import SportsList from './SportsList';
+import useFetch from './useFetch';
 
 function App() {
-
-  const [food, setFood] = useState([]);
-  const [isLoading, setLoading] = useState(false);
-  const [fighter, setFighter] = useState([]);
-  const [fightLoad, setFightLoad] = useState(false);
-  const [sports, setSport] = useState([]);
-  const [sportLoad, setSportLoad] = useState(false);
-  const [movie, setMovie] = useState([]);
-  const [movieLoad, setMovieLoad] = useState(false);
-
-  async function fetchData() {
-    setLoading(true);
-
-    const data = await getFood();
-
-    setLoading(false);
-    setFood(data);
-  }
-
-  async function fetchFighter() {
-    setFightLoad(true);
-
-    const data = await getFighter();
-
-    setFightLoad(false);
-    setFighter(data);
-  }
-
-  async function fetchSports() {
-    setSportLoad(true);
-
-    const data = await getSports();
-
-    setSportLoad(false);
-    setSport(data);
-  }
-
-  useEffect(() => {
-    fetchData();
-    fetchFighter();
-    fetchSports();
-  }, []);
+ 
+  const {
+    food, isLoading,
+    fighter, fightLoad,
+    sports, sportLoad,
+    movie, movieLoad,
+  } = useFetch();
+ 
   return (
     <div className="App">
       <h2>Different Food</h2>
@@ -69,6 +35,13 @@ function App() {
       {
         sportLoad ? <img src={Loading} />
           : <SportsList sports={sports} />
+      }
+
+      <h2>Different Anime!</h2>
+
+      {
+        movieLoad ? <img src={Loading} />
+          : <MovieList movie={movie} />
       }
     </div>
   );
